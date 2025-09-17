@@ -1,0 +1,13 @@
+{
+  "name": "apa-figure-export",
+  "version": "1.0.0",
+  "private": true,
+  "description": "APA-friendly PDF export (1200px width) for the experimental design & procedure flowchart.",
+  "scripts": {
+    "build:pdf": "mkdir -p build && npx -y @mermaid-js/mermaid-cli@10.9.1 -i figure-procedure-flowchart.mmd -o build/figure-procedure-flowchart.pdf -t neutral -w 1200 --pdfFit -b transparent",
+    "build:svg": "mkdir -p build && npx -y @mermaid-js/mermaid-cli@10.9.1 -i figure-procedure-flowchart.mmd -o build/figure-procedure-flowchart.svg -t neutral -w 1200 -b transparent"
+  },
+  "devDependencies": {
+    "@mermaid-js/mermaid-cli": "10.9.1"
+  }
+}
