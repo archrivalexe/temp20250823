@@ -1,0 +1,43 @@
+name: Build and Commit PPTX
+
+on:
+  push:
+    branches:
+      - '*'
+    paths:
+      - 'slides/**'
+      - '.github/workflows/build-ppt.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install python-pptx
+
+      - name: Generate PPT
+        run: python slides/generate_intro_ppt.py
+
+      - name: Commit generated PPT
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add slides/AIEd_Student_Social_Cognition_Intro_CN.pptx
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Add generated PPTX"
+            git push
+          fi
