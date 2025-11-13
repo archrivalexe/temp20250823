@@ -1,0 +1,88 @@
+%% APA-friendly, monochrome, vector-friendly Mermaid diagram
+%% Export width: 1200 px (handled by CLI)
+%% Font: sans-serif for figure readability per APA
+%%{init: {
+  "theme": "neutral",
+  "themeVariables": {
+    "fontFamily": "Arial, Helvetica, sans-serif",
+    "primaryColor": "#ffffff",
+    "primaryTextColor": "#111111",
+    "primaryBorderColor": "#333333",
+    "lineColor": "#333333",
+    "noteBkgColor": "#ffffff",
+    "noteTextColor": "#444444"
+  }
+}}%%
+
+flowchart TD
+  %% ====== Styles ======
+  classDef phase fill:#f7f7f7,stroke:#333,stroke-width:1.5px,color:#111;
+  classDef process fill:#fff,stroke:#333,stroke-width:1.5px,color:#111;
+  classDef decision fill:#fff,stroke:#333,stroke-dasharray:4 3,color:#111;
+  classDef note fill:#fff,stroke:#888,stroke-dasharray:3 3,color:#444;
+  classDef data fill:#fff,stroke:#333,stroke-width:1.5px,color:#111;
+
+  %% ====== Design Block ======
+  subgraph DES[Design Within-Subjects 2 x 2 x 2]
+    direction TB
+    D1[Within-subjects factorial design: 2 x 2 x 2]:::phase
+    D2[Collaboration partner: AI vs. Human]:::process
+    D3[Social cognition dimension: Warmth vs. Competence]:::process
+    D4[Valence: Positive vs. Negative]:::process
+    D5[Dependent variables: memory performance recognition, source; guessing parameters in source-monitoring]:::note
+    D1 --> D2 --> D3 --> D4
+    D4 -. informs .-> D5
+  end
+
+  %% ====== Stimuli / Sampling Block ======
+  subgraph STM[Stimuli and Sampling]
+    direction TB
+    Sx1[Chinese Adjective Lexicon for Fundamental Dimensions of Social Cognition Han et al., 2015]:::note
+    Sx2[120 adjectives total; 4 categories x 30 each\nPositive Warmth, Negative Warmth, Positive Competence, Negative Competence]:::data
+    Sx3[Per participant: 20 per category used in study 80 total\nRemaining 10 per category serve as new in test 40 total]:::note
+    Sx4[Randomization and balancing:\nAdjective-to-collaborator pairing balanced\nTrial order randomized]:::note
+    Sx1 --> Sx2 --> Sx3 --> Sx4
+  end
+
+  %% ====== Procedure Block ======
+  subgraph PROC[Procedure]
+    direction TB
+    P0[Participant]:::phase
+    P1[Study phase]:::phase
+    P1a[Read two collaborator descriptions both target characters are educators:\nAI collaborator: typically relies on AI to complete tasks\nHuman collaborator: typically works with colleagues]:::process
+    P1b[80 adjectives presented one-by-one\n20 per category]:::process
+    P1c[Each adjective paired with AI or Human collaborator\nbalanced, randomized]:::process
+    P1d[Suitability judgment for each adjective:\nF = suitable; J = not suitable]:::process
+
+    P2[Distractor task 5 minutes:\nMental arithmetic addition and subtraction]:::phase
+    P2n[Participants are unaware of the upcoming memory test until distractor completes]:::note
+
+    P3[Test phase]:::phase
+    P3a[120 adjectives in random order\n80 old from study, 40 new]:::process
+    P3b{Old/New recognition judgment\nF = old; J = new}:::decision
+    P3c[If old: source judgment\nWas it paired with AI or Human?\nKey assignment counterbalanced across participants]:::process
+    P3d[If new: proceed to next trial]:::process
+  end
+
+  %% ====== Outputs Block ======
+  subgraph OUT[Measures / Outputs]
+    direction TB
+    O1[Recognition performance e.g., accuracy, hit/false alarm rates]:::data
+    O2[Source memory performance AI vs. Human attribution]:::data
+    O3[Guessing parameters from source-monitoring task/model]:::data
+  end
+
+  %% ====== Cross-block Connections ======
+  STM --- P1b
+  DES -. constrains .- PROC
+
+  %% ====== Procedure Flow ======
+  P0 --> P1 --> P1a --> P1b --> P1c --> P1d --> P2 --> P3 --> P3a --> P3b
+  P2 -. no forewarning of test .- P2n
+
+  P3b -->|Old| P3c --> O2
+  P3b -->|New| P3d
+
+  %% Recognition feeds into outputs; Source feeds into outputs
+  P3b -. recognition metrics .-> O1
+  P3c -. source metrics & modeling .-> O3

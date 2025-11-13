@@ -1,0 +1,4 @@
+Figure X
+Experimental design and procedure
+
+Note. The experiment used a within-subjects 2 × 2 × 2 design with collaboration partner (AI vs. human), social cognition dimension (warmth vs. competence), and valence (positive vs. negative). In the study phase, 80 adjectives (20 per category) were judged for suitability and paired with AI or human collaborators (balanced, randomized). After a 5-minute arithmetic distractor, a recognition test presented 120 adjectives (80 old, 40 new). Participants first made an old/new judgment; for items judged old, they made a source judgment (AI vs. human; key mapping counterbalanced). Dependent variables included recognition and source memory performance, as well as guessing parameters estimated in the source-monitoring task.

@@ -1,0 +1,45 @@
+name: Render Figure PDF
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "figure-procedure-flowchart.mmd"
+      - "package.json"
+      - ".github/workflows/render-figure.yml"
+      - "figure-caption-APA.md"
+      - "export.sh"
+  pull_request:
+    paths:
+      - "figure-procedure-flowchart.mmd"
+      - "package.json"
+      - ".github/workflows/render-figure.yml"
+      - "figure-caption-APA.md"
+      - "export.sh"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install deps
+        run: npm install
+      - name: Build PDF
+        run: npm run build:pdf
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: figure-procedure-flowchart-pdf
+          path: build/figure-procedure-flowchart.pdf
+      - name: Commit PDF back on push (optional)
+        if: ${{ github.event_name == 'push' }}
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: build figure PDF"
+          file_pattern: build/figure-procedure-flowchart.pdf
